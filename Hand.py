@@ -29,17 +29,22 @@ hand_types = [  "Invalid",
 
 class Hand:
 
-    
-    def __init__(self, card1, card2, card3, card4, card5):
+    def __init__(self,cardstr,separator = ','):
         'Initialise with 5 cards'
         self.cards = []
         self.proc_suits = {}
         self.proc_strengths = {}
-        self.addCard(card1)
-        self.addCard(card2)
-        self.addCard(card3)
-        self.addCard(card4)
-        self.addCard(card5)
+        self.setCards(cardstr,separator)
+
+    def setCards(self,cardstr,separator = ','):
+        'assign 5 cards at once to a hand in a String format [A'
+        'A♥10♥K♥J♥Q♥'
+        'A♥,10♥,K♥,J♥,Q♥'
+        cards_list = cardstr.split(separator)
+        # Reset existing cards
+        self.cards.clear()
+        for card in cards_list:
+            self.addCard(Card(card))  
 
     def __processCard(self,card):
         'will update internal structures to help decide hand strength'
@@ -166,47 +171,48 @@ class Hand:
 # ['♠','♥','◆','♣']
 
 # Test isFlush
-assert Hand(Card("8♥"),Card("10♥"),Card("6♥"),Card("A♥"),Card("2♥")).isFlush() , 'Hand is not a flush'
-assert not Hand(Card("8♥"),Card("8♥"),Card("6♥"),Card("A♥"),Card("2♥")).isFlush() , 'Hand is a flush'
-assert not Hand(Card("8♠"),Card("10♥"),Card("6♠"),Card("A♥"),Card("2♥")).isFlush() , 'Hand is a flush'
-assert Hand(Card("A♥"),Card("10♥"),Card("K♥"),Card("J♥"),Card("Q♥")).isFlush() , 'Hand is a Flush'
+assert Hand("8♥,10♥,6♥,A♥,2♥").isFlush() , 'Hand is not a flush'
+
+assert not Hand("8♥,8♥,6♥,A♥,2♥").isFlush() , 'Hand is a flush'
+assert not Hand("8♠,10♥,6♠,A♥,2♥").isFlush() , 'Hand is a flush'
+assert Hand("A♥,10♥,K♥,J♥,Q♥").isFlush() , 'Hand is a Flush'
 
 # Test isStraight
 # Ordered Straight
-assert Hand(Card("A♥"),Card("K♥"),Card("Q♥"),Card("J♥"),Card("10♥")).isStraight() , 'Hand should be a Straight'
-assert Hand(Card("Q♥"),Card("J♣"),Card("10♥"),Card("9♣"),Card("8♥")).isStraight() , 'Hand should be a Straight'
+assert Hand("A♥,K♥,Q♥,J♥,10♥").isStraight() , 'Hand should be a Straight'
+assert Hand("Q♥,J♣,10♥,9♣,8♥").isStraight() , 'Hand should be a Straight'
 
 # Not Ordered Stragith
-assert Hand(Card("A♥"),Card("10♥"),Card("K♥"),Card("J♥"),Card("Q♥")).isStraight() , 'Hand should be a Straight'
-assert Hand(Card("A♣"),Card("5♥"),Card("3♥"),Card("2◆"),Card("4◆")).isStraight() , 'Hand should be a Straight'
-assert Hand(Card("7♥"),Card("6♥"),Card("8♥"),Card("5♥"),Card("9♥")).isStraight() , 'Hand should be a Straight'
-assert Hand(Card("K♣"),Card("J♥"),Card("Q♥"),Card("9◆"),Card("10◆")).isStraight() , 'Hand should be a Straight'
-assert not Hand(Card("8♥"),Card("10♥"),Card("6♥"),Card("A♥"),Card("2♥")).isStraight() , 'Hand should not be a straight'
+assert Hand("A♥,10♥,K♥,J♥,Q♥").isStraight() , 'Hand should be a Straight'
+assert Hand("A♣,5♥,3♥,2◆,4◆").isStraight() , 'Hand should be a Straight'
+assert Hand("7♥,6♥,8♥,5♥,9♥").isStraight() , 'Hand should be a Straight'
+assert Hand("K♣,J♥,Q♥,9◆,10◆").isStraight() , 'Hand should be a Straight'
+assert not Hand("8♥,10♥,6♥,A♥,2♥").isStraight() , 'Hand should not be a straight'
 
 # Hand Type
-assert hand_types[ Hand(Card("A♥"),Card("10♥"),Card("K♥"),Card("J♥"),Card("Q♥")).handType() ] == "Royal Flush", 'Should be Royal Flush'
-assert hand_types[ Hand(Card("J♥"),Card("9◆"),Card("Q♥"),Card("K♣"),Card("10◆")).handType() ] == "Straight", 'Should be a Straight'
-assert hand_types[ Hand(Card("8♥"),Card("10♥"),Card("6♥"),Card("A♥"),Card("2♥")).handType() ] == "Flush", 'Should be a Flush'
-assert hand_types[ Hand(Card("8♥"),Card("5♥"),Card("6♥"),Card("A♥"),Card("2♥")).handType()  ] == "Flush" , 'Should be a Flush'
-assert hand_types[ Hand(Card("8♠"),Card("10♥"),Card("6♠"),Card("A♥"),Card("2♥")).handType() ] == "High Card", 'Should be High Card'
-assert hand_types[ Hand(Card("A♥"),Card("10♥"),Card("K♥"),Card("J♥"),Card("K♣")).handType() ] == "One Pair", 'Should be One Pair'
-assert hand_types[ Hand(Card("A♥"),Card("K♥"),Card("J◆"),Card("J♥"),Card("A◆")).handType()  ] == "Two Pairs", 'Should be two Pairs'
+assert hand_types[ Hand("A♥,10♥,K♥,J♥,Q♥").handType() ] == "Royal Flush", 'Should be Royal Flush'
+assert hand_types[ Hand("J♥,9◆,Q♥,K♣,10◆").handType() ] == "Straight", 'Should be a Straight'
+assert hand_types[ Hand("8♥,10♥,6♥,A♥,2♥").handType() ] == "Flush", 'Should be a Flush'
+assert hand_types[ Hand("8♥,5♥,6♥,A♥,2♥").handType()  ] == "Flush" , 'Should be a Flush'
+assert hand_types[ Hand("8♠,10♥,6♠,A♥,2♥").handType() ] == "High Card", 'Should be High Card'
+assert hand_types[ Hand("A♥,10♥,K♥,J♥,K♣").handType() ] == "One Pair", 'Should be One Pair'
+assert hand_types[ Hand("A♥,K♥,J◆,J♥,A◆").handType()  ] == "Two Pairs", 'Should be two Pairs'
 
-assert hand_types[ Hand(Card("Q◆"),Card("J♣"),Card("Q♥"),Card("9♣"),Card("Q♣")).handType()  ] == "Three of a Kind", 'Hand should be a Three of a Kind'
-assert hand_types[ Hand(Card("Q◆"),Card("9♥"),Card("Q♥"),Card("9♣"),Card("Q♣")).handType()  ] == "Full House", 'Hand should be a Full House'
+assert hand_types[ Hand("Q◆,J♣,Q♥,9♣,Q♣").handType()  ] == "Three of a Kind", 'Hand should be a Three of a Kind'
+assert hand_types[ Hand("Q◆,9♥,Q♥,9♣,Q♣").handType()  ] == "Full House", 'Hand should be a Full House'
 
-assert hand_types[ Hand(Card("A♣"),Card("5♥"),Card("A♥"),Card("A◆"),Card("A♠")).handType()  ] == "Quads", 'Hand should be Quads'
-assert hand_types[ Hand(Card("K◆"),Card("J◆"),Card("Q◆"),Card("9◆"),Card("10◆")).handType() ] == "Straight Flush" , 'Hand should be a Straight Flush'
+assert hand_types[ Hand("A♣,5♥,A♥,A◆,A♠").handType()  ] == "Quads", 'Hand should be Quads'
+assert hand_types[ Hand("K◆,J◆,Q◆,9◆,10◆").handType() ] == "Straight Flush" , 'Hand should be a Straight Flush'
 
 # Comparison
 
 # High Cards # ['♠','♥','◆','♣']
-assert Hand(Card("A♠"),Card("10♥"),Card("7♥"),Card("5♥"),Card("Q♣")).against(Hand(Card("J♥"),Card("9◆"),Card("2♣"),Card("3♣"),Card("10◆"))) == "WIN"
-assert Hand(Card("A♠"),Card("10♥"),Card("7♥"),Card("5♥"),Card("Q♣")).against(Hand(Card("A♥"),Card("10◆"),Card("5♣"),Card("7♣"),Card("Q◆"))) == "SPLIT"
-assert Hand(Card("A♠"),Card("10♥"),Card("7♥"),Card("5♥"),Card("Q♣")).against(Hand(Card("A♥"),Card("Q◆"),Card("5♣"),Card("7♣"),Card("K◆"))) == "LOSE"
+assert Hand("A♠,10♥,7♥,5♥,Q♣").against(Hand("J♥,9◆,2♣,3♣,10◆")) == "WIN"
+assert Hand("A♠,10♥,7♥,5♥,Q♣").against(Hand("A♥,10◆,5♣,7♣,Q◆")) == "SPLIT"
+assert Hand("A♠,10♥,7♥,5♥,Q♣").against(Hand("A♥,Q◆,5♣,7♣,K◆")) == "LOSE"
 
-assert Hand(Card("8♥"),Card("10♥"),Card("6♥"),Card("2♥"),Card("2♣")).against(Hand(Card("8♣"),Card("A♥"),Card("6♥"),Card("A♥"),Card("2♥"))) == "WIN"
-assert Hand(Card("8♠"),Card("10♥"),Card("6♠"),Card("A♥"),Card("2♥")) > Hand(Card("A♥"),Card("10♥"),Card("K♥"),Card("J♥"),Card("K♣"))
-assert Hand(Card("A♥"),Card("K♥"),Card("J◆"),Card("J♥"),Card("A◆")) > Hand(Card("Q◆"),Card("J♣"),Card("Q♥"),Card("9♣"),Card("Q♣"))
-assert Hand(Card("Q◆"),Card("9♥"),Card("Q♥"),Card("9♣"),Card("Q♣")) > Hand(Card("A♣"),Card("5♥"),Card("A♥"),Card("A◆"),Card("A♠"))
+# assert Hand("8♥,10♥,6♥,2♥,2♣").against(Hand("8♣,A♥,6♥,A♥,2♥")) == "WIN"
+# assert Hand("8♠,10♥,6♠,A♥,2♥").against(Hand("A♥,10♥,K♥,J♥,K♣")
+# assert Hand("A♥,K♥,J◆,J♥,A◆") > Hand("Q◆,J♣,Q♥,9♣,Q♣")
+# assert Hand("Q◆,9♥,Q♥,9♣,Q♣") > Hand("A♣,5♥,A♥,A◆,A♠")
 
