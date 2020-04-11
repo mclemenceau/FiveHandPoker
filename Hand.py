@@ -118,7 +118,14 @@ class Hand:
                 else:
                     return hand_types["Quads"]
         return hand_types["Invalid Hand"]
-    
+
+    def handTypeStr(self):
+        num = self.handType()
+        for key in hand_types.keys():
+            if hand_types[key] == num:
+                return key
+        return "Invalid"
+        
     # Compare two hands
     def against(self,other):
         hand_type = self.handType() 
