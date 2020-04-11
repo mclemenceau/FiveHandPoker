@@ -15,17 +15,17 @@ from Card import *
 #       Royal Flush
 # 
 
-hand_types = [  "Invalid",
-                "High Card",
-                "One Pair",
-                "Two Pairs",
-                "Three of a Kind",
-                "Straight",
-                "Flush",
-                "Full House",
-                "Quads",
-                "Straight Flush",
-                "Royal Flush"]
+hand_types = {  "Invalid":0,
+                "High Card":1,
+                "One Pair":2,
+                "Two Pairs":3,
+                "Three of a Kind":4,
+                "Straight":5,
+                "Flush":6,
+                "Full House":7,
+                "Quads":8,
+                "Straight Flush":9,
+                "Royal Flush":10}
 
 class Hand:
 
@@ -95,29 +95,29 @@ class Hand:
                 if self.isStraight():
                     if self.isFlush():
                         if self.highCard().strength == 'A':
-                            return hand_types.index("Royal Flush")
+                            return hand_types["Royal Flush"]
                         else:
-                            return hand_types.index("Straight Flush")
+                            return hand_types["Straight Flush"]
                     else:
-                        return hand_types.index("Straight")
+                        return hand_types["Straight"]
                 elif self.isFlush():
-                    return hand_types.index("Flush")
+                    return hand_types["Flush"]
                 else:
-                    return hand_types.index("High Card")
+                    return hand_types["High Card"]
             # One Pair
             elif count == 4:
-                return hand_types.index("One Pair")
+                return hand_types["One Pair"]
             elif count == 3:
                 if 3 in self.proc_strengths.values():
-                    return hand_types.index("Three of a Kind")
+                    return hand_types["Three of a Kind"]
                 else:
-                    return hand_types.index("Two Pairs")
+                    return hand_types["Two Pairs"]
             elif count == 2:    
                 if 3 in self.proc_strengths.values():
-                    return hand_types.index("Full House")
+                    return hand_types["Full House"]
                 else:
-                    return hand_types.index("Quads")
-        return hand_types.index("Invalid Hand")
+                    return hand_types["Quads"]
+        return hand_types["Invalid Hand"]
     
     # Compare two hands
     def against(self,other):
@@ -125,7 +125,7 @@ class Hand:
         other_type = other.handType()
         if hand_type == other_type:
             # High Card will be compared one by one until a card is smaller
-            if hand_type == hand_types.index("High Card"):
+            if hand_type == hand_types["High Card"]:
                 for self_card,other_card in zip(self.cards,other.cards):
                     if self_card.index != other_card.index:
                         if self_card.index < other_card.index:
@@ -135,23 +135,23 @@ class Hand:
                 # If all the cards are the same, it is a split
                 return "SPLIT"
             # Check if pair is higher otherwise, check the remaining 3 cards one by one 
-            elif hand_type == hand_types.index("One Pair"):
+            elif hand_type == hand_types["One Pair"]:
                 self.debugPrint()
                 other.debugPrint()
                 return "LOSE"
-            elif hand_type == hand_types.index("Two Pairs"):
+            elif hand_type == hand_types["Two Pairs"]:
                 return "LOSE"
-            elif hand_type == hand_types.index("Three of a Kind"):
+            elif hand_type == hand_types["Three of a Kind"]:
                 return "LOSE"
-            elif hand_type == hand_types.index("Straight"):
+            elif hand_type == hand_types["Straight"]:
                 return "LOSE"
-            elif hand_type == hand_types.index("Flush"):
+            elif hand_type == hand_types["Flush"]:
                 return "LOSE"
-            elif hand_type == hand_types.index("Quads"):
+            elif hand_type == hand_types["Quads"]:
                 return "LOSE"
-            elif hand_type == hand_types.index("Straight Flush"):
+            elif hand_type == hand_types["Straight Flush"]:
                 return "LOSE"
-            elif hand_type == hand_types.index("Royal Flush"):
+            elif hand_type == hand_types["Royal Flush"]:
                 return "LOSE"
         else:
             if hand_type > other_type:
@@ -190,19 +190,19 @@ assert Hand("K♣,J♥,Q♥,9◆,10◆").isStraight() , 'Hand should be a Straig
 assert not Hand("8♥,10♥,6♥,A♥,2♥").isStraight() , 'Hand should not be a straight'
 
 # Hand Type
-assert hand_types[ Hand("A♥,10♥,K♥,J♥,Q♥").handType() ] == "Royal Flush", 'Should be Royal Flush'
-assert hand_types[ Hand("J♥,9◆,Q♥,K♣,10◆").handType() ] == "Straight", 'Should be a Straight'
-assert hand_types[ Hand("8♥,10♥,6♥,A♥,2♥").handType() ] == "Flush", 'Should be a Flush'
-assert hand_types[ Hand("8♥,5♥,6♥,A♥,2♥").handType()  ] == "Flush" , 'Should be a Flush'
-assert hand_types[ Hand("8♠,10♥,6♠,A♥,2♥").handType() ] == "High Card", 'Should be High Card'
-assert hand_types[ Hand("A♥,10♥,K♥,J♥,K♣").handType() ] == "One Pair", 'Should be One Pair'
-assert hand_types[ Hand("A♥,K♥,J◆,J♥,A◆").handType()  ] == "Two Pairs", 'Should be two Pairs'
+assert Hand("A♥,10♥,K♥,J♥,Q♥").handType() == hand_types["Royal Flush"], 'Should be Royal Flush'
+assert Hand("J♥,9◆,Q♥,K♣,10◆").handType() == hand_types["Straight"], 'Should be a Straight'
+assert Hand("8♥,10♥,6♥,A♥,2♥").handType() == hand_types["Flush"], 'Should be a Flush'
+assert Hand("8♥,5♥,6♥,A♥,2♥").handType()  == hand_types["Flush"] , 'Should be a Flush'
+assert Hand("8♠,10♥,6♠,A♥,2♥").handType() == hand_types["High Card"], 'Should be High Card'
+assert Hand("A♥,10♥,K♥,J♥,K♣").handType() == hand_types["One Pair"], 'Should be One Pair'
+assert Hand("A♥,K♥,J◆,J♥,A◆").handType()  == hand_types["Two Pairs"], 'Should be two Pairs'
 
-assert hand_types[ Hand("Q◆,J♣,Q♥,9♣,Q♣").handType()  ] == "Three of a Kind", 'Hand should be a Three of a Kind'
-assert hand_types[ Hand("Q◆,9♥,Q♥,9♣,Q♣").handType()  ] == "Full House", 'Hand should be a Full House'
+assert Hand("Q◆,J♣,Q♥,9♣,Q♣").handType()  == hand_types["Three of a Kind"], 'Hand should be a Three of a Kind'
+assert Hand("Q◆,9♥,Q♥,9♣,Q♣").handType()  == hand_types["Full House"], 'Hand should be a Full House'
 
-assert hand_types[ Hand("A♣,5♥,A♥,A◆,A♠").handType()  ] == "Quads", 'Hand should be Quads'
-assert hand_types[ Hand("K◆,J◆,Q◆,9◆,10◆").handType() ] == "Straight Flush" , 'Hand should be a Straight Flush'
+assert Hand("A♣,5♥,A♥,A◆,A♠").handType()  == hand_types["Quads"], 'Hand should be Quads'
+assert Hand("K◆,J◆,Q◆,9◆,10◆").handType() == hand_types["Straight Flush"] , 'Hand should be a Straight Flush'
 
 # Comparison
 
