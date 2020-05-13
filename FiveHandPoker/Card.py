@@ -38,36 +38,3 @@ class Card:
                 return 1
         else:
                 return -1
-
-# TEST
-# Initial testing of Card object
-assert(Card("A♠").suit == "♠")
-assert(Card("K◆").suit == "◆")
-assert(Card("7♥").suit == "♥")
-assert(Card("3♣").suit == "♣")
-assert(Card("10♣").suit == "♣")
-
-assert(Card("2♠").index == 12)
-assert(Card("8♥").index == 6)
-assert(Card("J♥").index == 3)
-assert(Card("K♣").index == 1)
-assert(Card("A♥").index == 0)
-
-assert(str(Card("3♠"))  == "3♠")
-assert(str(Card("10♠")) == "10♠")
-assert(str(Card("J♠"))  == "J♠")
-
-# TEST Card Value
-assert(Card("A♠").compareTo(Card("K♠")))
-assert(Card("A♠").compareTo(Card("Q♠")))
-assert(Card("A♠").compareTo(Card("3♠")))
-assert(Card("J♠").compareTo(Card("8♥")))
-
-assert(Card("A♠").compareTo(Card("A♥"))==0)
-assert(Card("10♥").compareTo(Card("10♣"))==0)
-
-assert(Card("K♥").compareTo(Card("A♥"))<0)
-assert(Card("K♥").compareTo(Card("A♣"))<0)
-assert(Card("Q♠").compareTo(Card("K♣"))<0)
-assert(Card("8♠").compareTo(Card("J♣"))<0)
-assert(Card("4♠").compareTo(Card("8♣"))<0)

@@ -3,8 +3,8 @@
 import sys
 import random      
 
-from Card import *
-from Hand import *
+from Card import Card,card_suits,card_strengths
+from Hand import Hand
 
 
 print ("Five Hands Poker by bncmatt")

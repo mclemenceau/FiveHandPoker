@@ -1,4 +1,4 @@
-from Card import *
+from Card import Card
 
 # A Hand is a group of 5 Cards (Card Object)
 # a Hand could have higher value than another Hand
@@ -173,53 +173,4 @@ class Hand:
         print(self.cards)
         print(self.proc_suits)
         print(self.proc_strengths)
-
-# Testing
-# ['♠','♥','◆','♣']
-
-# Test isFlush
-assert Hand("8♥,10♥,6♥,A♥,2♥").isFlush() , 'Hand is not a flush'
-
-assert not Hand("8♥,8♥,6♥,A♥,2♥").isFlush() , 'Hand is a flush'
-assert not Hand("8♠,10♥,6♠,A♥,2♥").isFlush() , 'Hand is a flush'
-assert Hand("A♥,10♥,K♥,J♥,Q♥").isFlush() , 'Hand is a Flush'
-
-# Test isStraight
-# Ordered Straight
-assert Hand("A♥,K♥,Q♥,J♥,10♥").isStraight() , 'Hand should be a Straight'
-assert Hand("Q♥,J♣,10♥,9♣,8♥").isStraight() , 'Hand should be a Straight'
-
-# Not Ordered Stragith
-assert Hand("A♥,10♥,K♥,J♥,Q♥").isStraight() , 'Hand should be a Straight'
-assert Hand("A♣,5♥,3♥,2◆,4◆").isStraight() , 'Hand should be a Straight'
-assert Hand("7♥,6♥,8♥,5♥,9♥").isStraight() , 'Hand should be a Straight'
-assert Hand("K♣,J♥,Q♥,9◆,10◆").isStraight() , 'Hand should be a Straight'
-assert not Hand("8♥,10♥,6♥,A♥,2♥").isStraight() , 'Hand should not be a straight'
-
-# Hand Type
-assert Hand("A♥,10♥,K♥,J♥,Q♥").handType() == hand_types["Royal Flush"], 'Should be Royal Flush'
-assert Hand("J♥,9◆,Q♥,K♣,10◆").handType() == hand_types["Straight"], 'Should be a Straight'
-assert Hand("8♥,10♥,6♥,A♥,2♥").handType() == hand_types["Flush"], 'Should be a Flush'
-assert Hand("8♥,5♥,6♥,A♥,2♥").handType()  == hand_types["Flush"] , 'Should be a Flush'
-assert Hand("8♠,10♥,6♠,A♥,2♥").handType() == hand_types["High Card"], 'Should be High Card'
-assert Hand("A♥,10♥,K♥,J♥,K♣").handType() == hand_types["One Pair"], 'Should be One Pair'
-assert Hand("A♥,K♥,J◆,J♥,A◆").handType()  == hand_types["Two Pairs"], 'Should be two Pairs'
-
-assert Hand("Q◆,J♣,Q♥,9♣,Q♣").handType()  == hand_types["Three of a Kind"], 'Hand should be a Three of a Kind'
-assert Hand("Q◆,9♥,Q♥,9♣,Q♣").handType()  == hand_types["Full House"], 'Hand should be a Full House'
-
-assert Hand("A♣,5♥,A♥,A◆,A♠").handType()  == hand_types["Quads"], 'Hand should be Quads'
-assert Hand("K◆,J◆,Q◆,9◆,10◆").handType() == hand_types["Straight Flush"] , 'Hand should be a Straight Flush'
-
-# Comparison
-
-# High Cards # ['♠','♥','◆','♣']
-assert Hand("A♠,10♥,7♥,5♥,Q♣").against(Hand("J♥,9◆,2♣,3♣,10◆")) == "WIN"
-assert Hand("A♠,10♥,7♥,5♥,Q♣").against(Hand("A♥,10◆,5♣,7♣,Q◆")) == "SPLIT"
-assert Hand("A♠,10♥,7♥,5♥,Q♣").against(Hand("A♥,Q◆,5♣,7♣,K◆")) == "LOSE"
-
-# assert Hand("8♥,10♥,6♥,2♥,2♣").against(Hand("8♣,A♥,6♥,A♥,2♥")) == "WIN"
-# assert Hand("8♠,10♥,6♠,A♥,2♥").against(Hand("A♥,10♥,K♥,J♥,K♣")
-# assert Hand("A♥,K♥,J◆,J♥,A◆") > Hand("Q◆,J♣,Q♥,9♣,Q♣")
-# assert Hand("Q◆,9♥,Q♥,9♣,Q♣") > Hand("A♣,5♥,A♥,A◆,A♠")
-
+        

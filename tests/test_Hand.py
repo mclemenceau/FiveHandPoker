@@ -1,6 +1,6 @@
 import unittest
 
-from FiveHandPoker.Hand import *
+from FiveHandPoker.Hand import Hand,hand_types
 
 class TestHand(unittest.TestCase):
 
