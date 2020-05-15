@@ -1,4 +1,4 @@
-from Card import Card
+from FiveHandPoker.Card import Card
 
 # A Hand is a group of 5 Cards (Card Object)
 # a Hand could have higher value than another Hand
